@@ -91,7 +91,6 @@ export const handleLogin = async ( login, handleResult ) => {
         }
     
       } catch (error) {
-        console.error(error)
         Swal.fire({
           icon: 'error',
           title: 'Login Error',
