@@ -1,0 +1,7 @@
+{
+    "name": "Reblood",
+    "integrations": {
+      "capacitor": {}
+    },
+    "type": "react"
+  }
