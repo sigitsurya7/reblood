@@ -4,7 +4,7 @@ import Swal from "sweetalert2"
 const axiosInstance = () => {
     const token = localStorage.getItem('token')
     const instance = axios.create({
-      baseURL: import.meta.env.VITE_API_URL,
+      baseURL: 'http://203.194.112.121:9569/v1/',
       headers: {
         Authorization: `Bearer ${token}`,
         // 'Content-Type': 'application/json',
