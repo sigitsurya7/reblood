@@ -8,6 +8,7 @@ RUN npm install --legacy-peer-deps
 #RUN update-notifier-update --disable
  
 COPY .env ./
+COPY .env.production ./
 COPY public ./public
 COPY src ./src
 COPY tailwind.config.js .
