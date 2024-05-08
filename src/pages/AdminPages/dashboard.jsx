@@ -7,6 +7,17 @@ const Dashboard = () => {
     return(
         <>
             <span className='text-xl font-semibold capitalize'>{greeting} {nama}</span>
+
+            <div className='grid grid-cols-1 lg:grid-cols-3 my-4'>
+
+                <div className="card w-full bg-base-100 text-primary-content">
+                    <div className="card-body">
+                        <h2 className="card-title">Contoh Card</h2>
+                        <p>Text!</p>
+                    </div>
+                </div>
+
+            </div>
         </>
     )
 }
