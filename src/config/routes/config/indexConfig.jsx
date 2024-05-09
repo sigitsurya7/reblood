@@ -3,6 +3,7 @@ import { BiSolidDashboard, BiSpeaker } from "react-icons/bi"
 import { getRole } from "../../middleware/hooks/authConfig"
 import Dashboard from "../../../pages/AdminPages/dashboard"
 import Pengumuman from "../../../pages/AdminPages/pengumuman"
+import { BottomNav } from "./module/bottomNav"
 // Dashboar Page
 
 // Module
@@ -26,7 +27,7 @@ const role = getRole()
 const Menu = () => {
     
     if (role === 'User') {
-        return [dashboardRoute]
+        return [dashboardRoute, BottomNav]
     } else if(role === 'production') {
         return [dashboardRoute]
     } else if(role === 'she'){

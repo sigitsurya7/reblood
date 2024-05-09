@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { BiBook, BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi"
 import { NavLink, useLocation } from "react-router-dom"
 import { Routers } from "../../../../config/routes/config/indexConfig"
+import { MdBloodtype } from "react-icons/md"
 const ReactName = import.meta.env
 
 const SideBar = ({ open }) => {
@@ -51,6 +52,9 @@ const SideBar = ({ open }) => {
 
     if (item.module){
       return <span key={index} className="my-2 mx-2 font-semibold text-sm">{item.moduleName}</span>
+    }
+    if(item.singeRoute){
+      return null
     }
 
     return (
@@ -209,7 +213,7 @@ const SideBar = ({ open }) => {
     >
       <div className="h-full px-3 py-4 overflow-y-auto">
         <button className="btn btn-ghost flex items-center text-xl w-full py-2 mb-4 mt-2">
-           <BiBook /> {ReactName.VITE_SHORT_NAME}
+           <MdBloodtype /> {ReactName.VITE_SHORT_NAME}
         </button>
         <p className="text-center font-bold mb-4">{ReactName.VITE_APP}</p>
 

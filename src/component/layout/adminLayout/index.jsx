@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Outlet, useLocation } from "react-router-dom"
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom"
 import Navbar from "./element/navbar"
 import SideBar from "./element/sidebar"
 import { FaCog, FaHome, FaPlus, FaSearch } from "react-icons/fa"
@@ -52,28 +52,28 @@ const AdminLayout = ({ role }) => {
             <div className="px-7 bg-base-100 shadow-lg rounded-2xl mb-5">
                 <div className="flex">
                     <div className="flex-1 group">
-                        <a href="#" className="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-secondary border-b-2 border-transparent group-hover:border-secondary">
+                        <NavLink to={'/dashboard'} className="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-secondary border-b-2 border-transparent group-hover:border-secondary">
                             <span className="flex flex-col justify-center items-center px-1 pt-1 pb-2">
                                 <FaHome className="text-2xl pt-1 mb-1 block" />
                                 <span className="block text-xs pb-1">Home</span>
                             </span>
-                        </a>
+                        </NavLink>
                     </div>
                     <div className="flex-1 group">
-                        <a href="#" className="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-secondary border-b-2 border-transparent group-hover:border-secondary">
+                        <NavLink to={'/create'} className="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-secondary border-b-2 border-transparent group-hover:border-secondary">
                             <span className="flex flex-col justify-center items-center px-1 pt-1 pb-2">
                                 <FaPlus className="text-2xl pt-1 mb-1 block" />
                                 <span className="block text-xs pb-1">Create</span>
                             </span>
-                        </a>
+                        </NavLink>
                     </div>
                     <div className="flex-1 group">
-                        <a href="#" className="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-secondary border-b-2 border-transparent group-hover:border-secondary">
+                        <NavLink to={'/jadwal'} className="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-secondary border-b-2 border-transparent group-hover:border-secondary">
                             <span className="flex flex-col justify-center items-center px-1 pt-1 pb-2">
                                 <FaCalendar className="text-2xl pt-1 mb-1 block" />
                                 <span className="block text-xs pb-1">Jadwal</span>
                             </span>
-                        </a>
+                        </NavLink >
                     </div>
                 </div>
             </div>
