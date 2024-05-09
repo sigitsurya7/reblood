@@ -16,7 +16,8 @@ export default defineConfig({
         name: 'Request Blood',
         short_name: 'Reblood',
         description: 'Blood Donor Apps',
-        theme_color: '#ffffff',
+        theme_color: '#efeae6',
+        display:"standalone",
         icons: [
           {
             src: '/icon/mipmap-hdpi/maskable_icon.png',
