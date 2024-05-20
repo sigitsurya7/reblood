@@ -37,7 +37,7 @@ const Dashboard = () => {
                         return(
                             <>
                                 <div key={index} className='card rounded-tr-[5rem] p-3 shadow-md bg-base-100'>
-                                    <div className='flex flex-col gap-1 p-4 z-10'>
+                                    <div className='flex flex-col p-4'>
                                         <div className='flex justify-between'>
                                             <div className='flex flex-col items-center'>
                                                 <span className='font-semibold'>Golongan Darah</span>
@@ -53,15 +53,15 @@ const Dashboard = () => {
 
                                         <div className='flex justify-between items-baseline gap-1 flex-wrap'>
                                             <div className='flex flex-col items-center'>
-                                                <span className='font-semibold'>{value.gender == 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
+                                                <span className='font-bold'>{value.gender == 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
                                                 <span>Gender</span>
                                             </div>
                                             <div className='flex flex-col items-center'>
-                                                <span className='font-semibold'>{value.sakit}</span>
+                                                <span className='font-bold'>{value.sakit}</span>
                                                 <span>Sakit</span>
                                             </div>
                                             <div className='flex flex-col items-center'>
-                                                <span className='font-semibold'>{value.created_by}</span>
+                                                <span className='font-bold'>{value.created_by}</span>
                                                 <span>Pemohon</span>
                                             </div>
                                         </div>
@@ -71,7 +71,7 @@ const Dashboard = () => {
                                             <button type="button" className='btn btn-circle text-white btn-info'><FaEye /></button>
                                         </div>
                                     </div>
-                                    <img className='w-24 rounded z-1 absolute top-[2rem] left-[-1rem]' src={value.gender == 'L' ? men : women} alt="" />
+                                    <img className='w-28 rounded z-1 absolute top-[2.6rem] left-[-1rem]' src={value.gender == 'L' ? men : women} alt="" />
                                 </div>
                             </>
                         )
