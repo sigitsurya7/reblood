@@ -2,15 +2,18 @@ import {BiGroup, BiSpeaker, BiUser, BiUserCheck} from 'react-icons/bi'
 import { Greeting, formatDate } from '../../config/middleware/hooks/greeting'
 import { useEffect, useState } from 'react'
 import { get } from '../../config/middleware/hooks/gateway'
-import { FaClock, FaEye, FaWhatsapp } from 'react-icons/fa6'
+import { FaCalendar, FaClock, FaEye, FaLocationPin, FaWhatsapp } from 'react-icons/fa6'
 import men from '../../assets/profile/men.png'
 import women from '../../assets/profile/women.png'
+import Modal from '../../component/modal/modal'
 
 const Dashboard = () => {
     var nama = localStorage.getItem('fullname')
     var greeting = Greeting()
 
     const [state, setState] = useState([])
+    const [select, setSelect] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     function getDataReqDarah(page)
     {
@@ -22,9 +25,11 @@ const Dashboard = () => {
 
     useEffect(() => {
         getDataReqDarah()
-
-        console.log(state)
     }, [])
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
 
     return(
         <>
@@ -32,8 +37,12 @@ const Dashboard = () => {
 
             <div className='grid grid-cols-1 lg:grid-cols-3 my-4 gap-4'>
                 {state ?
-                
                     state.data?.map((value, index) => {
+                        const show = () => {
+                            setSelect(value)
+                            setIsModalOpen(true)
+                            console.log(select)
+                        }
                         return(
                             <>
                                 <div key={index} className='card rounded-tr-[5rem] p-3 shadow-md bg-base-100'>
@@ -51,7 +60,7 @@ const Dashboard = () => {
 
                                         <div className='divider'></div>
 
-                                        <div className='flex justify-between items-baseline gap-1 flex-wrap'>
+                                        <div className='flex justify-between items-baseline gap-1 flex-wrap z-10'>
                                             <div className='flex flex-col items-center'>
                                                 <span className='font-bold'>{value.gender == 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
                                                 <span>Gender</span>
@@ -68,10 +77,10 @@ const Dashboard = () => {
 
                                         <div className='flex gap-3 justify-end mt-4 w-full'>
                                             <button type="button" className='btn btn-circle text-white btn-success'><FaWhatsapp /></button>
-                                            <button type="button" className='btn btn-circle text-white btn-info'><FaEye /></button>
+                                            <button type="button" className='btn btn-circle text-white btn-info' onClick={show}><FaEye /></button>
                                         </div>
                                     </div>
-                                    <img className='w-28 rounded z-1 absolute top-[2.6rem] left-[-1rem]' src={value.gender == 'L' ? men : women} alt="" />
+                                    <img className='w-24 rounded z-1 absolute top-[2.6rem] left-[-1rem]' src={value.gender == 'L' ? men : women} alt="" />
                                 </div>
                             </>
                         )
@@ -80,6 +89,50 @@ const Dashboard = () => {
                 : []}
 
             </div>
+
+            <Modal
+                title={'Detail'}
+                isOpen={isModalOpen}
+                onClose={closeModal}
+            >
+                <div className='flex flex-col gap-4 flex-wrap overflow-auto'>
+                    <div className='grid grid-cols-2 gap-4'>
+                        <div className='flex flex-col items-center'>
+                            <span className='font-bold'>{select.created_by}</span>
+                            <span>Pemohon</span>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <span className='font-bold'>{select.gender == 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
+                            <span>Gender</span>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <span className='font-bold'>{select.gol_darah}</span>
+                            <span>Golongan Darah</span>
+                        </div>
+
+                        <div className='flex flex-col items-center'>
+                            <span className='font-bold'>{select.sakit}</span>
+                            <span>Sakit</span>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <span className='font-bold'>{select.qty_darah}</span>
+                            <span>Jumlah Darah</span>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <span className='font-bold'>{select.lokasi}</span>
+                            <span>Lokasi</span>
+                        </div>
+                        <div className='flex flex-col items-center col-span-2'>
+                            <span className='font-bold'>{formatDate(select.tgl_lahir)}</span>
+                            <span className='font-semibold flex items-center gap-1'><FaCalendar /> Tanggal Lahir</span>
+                        </div>
+                        <div className='flex flex-col items-center col-span-2'>
+                            <span className='font-bold'>{formatDate(select.tgl_target)}</span>
+                            <span className='font-semibold flex items-center gap-1'><FaClock /> Target</span>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </>
     )
 }

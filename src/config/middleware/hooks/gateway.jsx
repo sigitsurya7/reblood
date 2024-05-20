@@ -14,7 +14,7 @@ const axiosInstance = () => {
     instance.interceptors.response.use(
       response => response,
       error => {
-        console.log(error.response.data.status);
+        console.log(error.response)
         if (error.response && error.response.data.status === 440) {
           Swal.fire({
             icon: 'error',
@@ -24,6 +24,16 @@ const axiosInstance = () => {
           }).then(() => {
             // localStorage.clear();
             // window.location.href = "/auth/sesion-end"
+          })
+        }else if(error.response.data.message == "Expired token" && error.response.data.status === 401){
+          Swal.fire({
+            icon: 'error',
+            text: 'You Session Has Been Expired.',
+            showConfirmButton: false,
+            timer: 3000
+          }).then(() => {
+            localStorage.clear();
+            window.location.href = "/auth/sesion-end"
           })
         }
         return Promise.reject(error)

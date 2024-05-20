@@ -40,7 +40,7 @@ const Modal = ({ isOpen, title, onClose, button, funcButton, children }) => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center">
                     <div className="absolute inset-0 z-0 bg-black opacity-90" onClick={closeModal}></div>
                     {/* <div className="w-full p-8"> */}
-                        <div className="bg-base-100 ml-8 mr-8 z-10 w-max p-6 rounded-lg shadow-md flex flex-col gap-4">
+                        <div className="bg-base-100 ml-8 mr-8 z-10 w-full p-6 rounded-lg shadow-md flex flex-col gap-4 overflow-y-scroll">
                             {/* Judul Modal */}
                             <div className="flex justify-between gap-4 items-center">
                                 <div>
@@ -53,7 +53,7 @@ const Modal = ({ isOpen, title, onClose, button, funcButton, children }) => {
                             </div>
 
                             {/* Konten Modal */}
-                            <div className="w-full">
+                            <div className="w-full overflow-auto">
                                 { children }
                             </div>
 
