@@ -128,7 +128,7 @@ const CreateHome = () => {
                         <div className="label">
                             <span className="label-text">Tanggal Lahir Penerima</span>
                         </div>
-                        <input type="date" name="tgl_lahir" placeholder="tgl_lahir" className="input input-secondary" value={state.tgl_lahir} onChange={handleInputChange} />
+                        <input type="date" name="tgl_lahir" placeholder="tgl_lahir" className="input input-secondary w-full" value={state.tgl_lahir} onChange={handleInputChange} />
                     </label>
                     
                     <label className="form-control w-full">
@@ -183,7 +183,7 @@ const CreateHome = () => {
                         <div className="label">
                             <span className="label-text">Batas Penerimaan</span>
                         </div>
-                        <input type="date" name="tgl_target" placeholder="tgl_target" className="input input-secondary" value={state.tgl_target} onChange={handleInputChange} />
+                        <input type="date" name="tgl_target" placeholder="tgl_target" className="input input-secondary w-full" value={state.tgl_target} onChange={handleInputChange} />
                     </label>
                     <div className='flex justify-center gap-4'>
                         {state.image_prev ? <img src={state.image_prev} alt="" className='w-1/2 rounded-xl' /> : ''}
