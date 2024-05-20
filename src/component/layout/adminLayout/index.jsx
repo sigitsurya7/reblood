@@ -49,7 +49,7 @@ const AdminLayout = ({ role }) => {
             <Outlet />
           </div>
           <div className="fixed w-full bottom-0 p-2 z-20 bg-base-200 lg:hidden block">
-            <div className="px-7 bg-base-100 shadow-lg rounded-2xl mb-5">
+            <div className="px-7 bg-base-100 shadow-lg rounded-2xl mb-2">
                 <div className="flex">
                     <div className="flex-1 group">
                         <NavLink to={'/dashboard'} className="flex items-end justify-center text-center mx-auto px-4 pt-2 w-full text-gray-400 group-hover:text-secondary border-b-2 border-transparent group-hover:border-secondary">
