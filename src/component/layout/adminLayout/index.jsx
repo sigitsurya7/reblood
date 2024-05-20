@@ -48,7 +48,7 @@ const AdminLayout = ({ role }) => {
             {/* BreadCumb */}
             <Outlet />
           </div>
-          <div className="fixed w-full bottom-5 p-4 z-20 bg-transparent lg:hidden block">
+          <div className="fixed w-full bottom-0 p-2 z-20 bg-base-200 lg:hidden block">
             <div className="px-7 bg-base-100 shadow-lg rounded-2xl mb-5">
                 <div className="flex">
                     <div className="flex-1 group">
