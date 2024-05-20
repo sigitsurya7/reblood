@@ -10,5 +10,9 @@ export function access_token(){
     return localStorage.getItem('token')
 }
 
+export function refresh_token(){
+    return localStorage.getItem('refresh_token')
+}
+
 // export const access_token = localStorage.getItem('token')
 export const access_role = localStorage.getItem('role')

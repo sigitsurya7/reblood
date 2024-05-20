@@ -3,10 +3,11 @@ import Swal from "sweetalert2"
 
 const axiosInstance = () => {
     const token = localStorage.getItem('token')
+    const refresh_token = localStorage.getItem('refresh_token')
     const instance = axios.create({
       baseURL: import.meta.env.VITE_API_URL,
       headers: {
-        Authorization: token ? `Bearer ${token}` : '',
+        Authorization: token ? `Bearer ${token}` : `Bearer ${refresh_token}`,
         // 'Content-Type': 'multipart/form-data'
       }
     })
