@@ -5,6 +5,7 @@ import { access_token } from "../../config/middleware/hooks/authConfig";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import AsyncSelect from 'react-select/async';
 import data from "../../config/middleware/services/json/provinces.json";
+import gol_darah from '../../config/middleware/services/json/gol_darah.json'
 import Select from "react-select";
 
 const Register = () => {
@@ -56,13 +57,6 @@ const Register = () => {
         })
     }
 
-    const options = [
-        { value: 'A', label: 'A' },
-        { value: 'B', label: 'B' },
-        { value: 'AB', label: 'AB' },
-        { value: 'O', label: 'O' }
-      ];
-
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -77,6 +71,23 @@ const Register = () => {
         }
     }
 
+    const handlePaste = (e) => {
+        const { name, value } = e.target
+        e.preventDefault()
+        let pasteText = e.clipboardData.getData('text')
+        
+        if (pasteText.startsWith('0')) {
+            pasteText = '62' + pasteText.substring(1)
+        }
+        pasteText = pasteText.replace('+62', '62')
+        e.target.value = pasteText
+
+        setState({
+            ...state,
+            [name]: pasteText
+        })
+    }
+
     if((access_token())){
         return <Navigate to="/" />
     }
@@ -88,7 +99,7 @@ const Register = () => {
                     <input type="text" name="fullName" placeholder="Nama Lengkap" className="input input-secondary w-full" value={state.fullName} onChange={handleInputChange} />
                 </div>
                 <div className="w-full">
-                    <input type="number" name="telpon" placeholder="No. Handphone" className="input input-secondary w-full" value={state.telpon} onChange={handleInputChange} />
+                    <input type="number" name="telpon" placeholder="No. Handphone" className="input input-secondary w-full" value={state.telpon} onPaste={handlePaste} onChange={handleInputChange} />
                 </div>
                 <div className="w-full">
                     <input type="text" name="email" placeholder="Email" className="input input-secondary w-full" value={state.email} onChange={handleInputChange} />
@@ -107,7 +118,7 @@ const Register = () => {
                 </div>
                 <div className="w-full">
                     <Select
-                        options={options}
+                        options={gol_darah}
                         placeholder="Pilih Golongan Darah"
                         onChange={(selectedOption) => handleInputChange({ target: { name: 'gol_darah', value: selectedOption } })}
                     />

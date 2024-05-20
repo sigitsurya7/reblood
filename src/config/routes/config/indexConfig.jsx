@@ -2,7 +2,6 @@
 import { BiSolidDashboard, BiSpeaker } from "react-icons/bi"
 import { getRole } from "../../middleware/hooks/authConfig"
 import Dashboard from "../../../pages/AdminPages/dashboard"
-import Pengumuman from "../../../pages/AdminPages/pengumuman"
 import { BottomNav } from "./module/bottomNav"
 // Dashboar Page
 
@@ -13,13 +12,6 @@ const dashboardRoute = {
     path: '/',
     element: <Dashboard />,
     icon: <BiSolidDashboard />
-}
-
-const pengumuman = {
-    name: 'Pengumuman',
-    path: '/pengumuman',
-    element: <Pengumuman />,
-    icon: <BiSpeaker />
 }
 
 const role = getRole()

@@ -38,13 +38,13 @@ const AdminLayout = ({ role }) => {
 
   return (
     <>
-      <div className={`flex bg-base-100`}>
+      <div className={`flex bg-base-200`}>
         <SideBar open={sidebarOpen} />
         <div className="lg:pl-64 flex flex-col w-full">
           <div className="sticky bg-base-200 top-0 z-20">
             <Navbar toggleSidebar={toggleSidebar} />
           </div>
-          <div className={`min-h-screen bg-base-200 p-4 ${sidebarOpen ? "overflow-hidden" : ""}`}>
+          <div className={`min-h-screen mb-36 bg-base-200 p-4 ${sidebarOpen ? "overflow-hidden" : ""}`}>
             {/* BreadCumb */}
             <Outlet />
           </div>

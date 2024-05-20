@@ -6,8 +6,8 @@ const axiosInstance = () => {
     const instance = axios.create({
       baseURL: import.meta.env.VITE_API_URL,
       headers: {
-        Authorization: `Bearer ${token}`,
-        // 'Content-Type': 'application/json',
+        Authorization: token ? `Bearer ${token}` : '',
+        // 'Content-Type': 'multipart/form-data'
       }
     })
     instance.interceptors.response.use(

@@ -35,6 +35,23 @@ const Login = () => {
         })
     }
 
+    const handlePaste = (e) => {
+        const { name, value } = e.target
+        e.preventDefault()
+        let pasteText = e.clipboardData.getData('text')
+        
+        if (pasteText.startsWith('0')) {
+            pasteText = '62' + pasteText.substring(1)
+        }
+        pasteText = pasteText.replace('+62', '62')
+        e.target.value = pasteText
+
+        setState({
+            ...state,
+            [name]: pasteText
+        })
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -55,7 +72,7 @@ const Login = () => {
         <>
             <form className="flex flex-col gap-2">
                 <div className="w-full">
-                    <input type="text" name="phone" placeholder="No. Handphone" className="input input-secondary w-full" value={state.phone} onChange={handleInputChange} />
+                    <input type="number" name="phone" placeholder="No. Handphone" className="input input-secondary w-full" value={state.phone} onPaste={handlePaste} onChange={handleInputChange} />
                 </div>
                 <div className="w-full">
                     <div className='relative'>
