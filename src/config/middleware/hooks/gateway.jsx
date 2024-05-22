@@ -3,18 +3,16 @@ import Swal from "sweetalert2"
 
 const axiosInstance = () => {
     const token = localStorage.getItem('token')
-    const refresh_token = localStorage.getItem('refresh_token')
     const instance = axios.create({
       baseURL: import.meta.env.VITE_API_URL,
       headers: {
-        Authorization: token ? `Bearer ${token}` : `Bearer ${refresh_token}`,
+        Authorization: token ? `Bearer ${token}` : '',
         // 'Content-Type': 'multipart/form-data'
       }
     })
     instance.interceptors.response.use(
       response => response,
       error => {
-        console.log(error.response)
         if (error.response && error.response.data.status === 440) {
           Swal.fire({
             icon: 'error',
@@ -32,7 +30,7 @@ const axiosInstance = () => {
             showConfirmButton: false,
             timer: 3000
           }).then(() => {
-            localStorage.clear();
+            localStorage.setItem('status_lock', 1)
             window.location.href = "/auth/sesion-end"
           })
         }

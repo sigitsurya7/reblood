@@ -3,9 +3,14 @@ import AdminLayout from "../../../component/layout/adminLayout";
 
 const PrivateRoutes = () => {
     const auth = localStorage.getItem('token');
-    return auth ? <AdminLayout /> : (
-        <Navigate to="/auth/login" />
-    );
+    const statusLock = localStorage.getItem('status_lock');
+    if(statusLock == 1){
+        return <Navigate to="/auth/lockscreen" />
+    }else{
+        return auth && statusLock == 0 ? <AdminLayout /> : (
+            <Navigate to="/auth/login" />
+        );
+    }
 }
 
 export default PrivateRoutes

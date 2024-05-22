@@ -68,7 +68,8 @@ export const handleLogin = async ( login, handleResult ) => {
           localStorage.setItem('role_id', role_id)
           localStorage.setItem('role_name', role_name)
           localStorage.setItem('userid', userid)
-          localStorage.setItem('theme', 'cupcake')
+          localStorage.setItem('status_lock', 0)
+          // localStorage.setItem('theme', 'cupcake')
 
           Swal.fire({
             icon: 'success',
@@ -155,6 +156,7 @@ export const handleLogout = async (handleResult) => {
       localStorage.removeItem('role_id')
       localStorage.removeItem('role_name')
       localStorage.removeItem('userid')
+      localStorage.removeItem('status_lock')
         handleResult('success')
     })
   }catch(error){

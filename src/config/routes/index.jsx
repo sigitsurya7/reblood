@@ -9,6 +9,7 @@ import Login from '../../pages/authPages/login'
 import Recovery from '../../pages/authPages/recovery'
 import NotFound from '../../pages/error/notFound'
 import Register from '../../pages/authPages/register'
+import LockScreen from '../../pages/authPages/lockscreen'
 import { Routers } from './config/indexConfig'
 
 const RouteIndex = () => {
@@ -62,6 +63,7 @@ const RouteIndex = () => {
                     <Route path='/auth/login' element={<Login />} />
                     <Route path='/auth/recovery' element={<Recovery />} />
                     <Route path='/auth/daftar' element={<Register />} />
+                    <Route path='/auth/lockscreen' element={<LockScreen />} />
                     <Route path='/auth/sesion-end' element={<PrivateRoutes />} />
                 </Route>
 
