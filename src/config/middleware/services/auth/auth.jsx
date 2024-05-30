@@ -11,6 +11,7 @@ export const handleRegister = async ( login, handleResult ) => {
         formdata.append('email', login.email)
         formdata.append('is_active', 'true')
         formdata.append('gol_darah', login.gol_darah.label)
+        formdata.append('jenis_kelamin', login.jenis_kelamin.label)
     
         const response = await post('registration', formdata)
     
@@ -69,7 +70,8 @@ export const handleLogin = async ( login, handleResult ) => {
           localStorage.setItem('role_name', role_name)
           localStorage.setItem('userid', userid)
           localStorage.setItem('status_lock', 0)
-          // localStorage.setItem('theme', 'cupcake')
+          let theme = localStorage.getItem('theme')
+          localStorage.setItem('theme', theme ? theme : 'cupcake')
 
           Swal.fire({
             icon: 'success',

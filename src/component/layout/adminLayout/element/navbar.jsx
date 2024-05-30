@@ -61,7 +61,7 @@ const Navbar = ({ toggleSidebar }) => {
             type="button"
             id="sidebar-toggle-button"
             onClick={toggleSidebar}
-            className="btn btn-ghost lg:hidden"
+            className="btn btn-ghost hidden"
           >
             <BiAlignMiddle className="w-5 h-5" />
           </button>
@@ -115,7 +115,10 @@ const Navbar = ({ toggleSidebar }) => {
                 </NavLink>
               </li>
               <li>
-                <a>Settings</a>
+                <a className="justify-between">
+                  Notifikasi
+                  <span className="badge badge-error badge-lg">2</span>
+                </a>
               </li>
               <li>
                 <a onClick={logout}>Logout</a>

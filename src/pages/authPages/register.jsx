@@ -11,6 +11,7 @@ import Select from "react-select";
 const Register = () => {
     const [state, setState] = useState({
         fullName: '',
+        jenis_kelamin: '',
         telpon: '',
         email: '',
         lokasi: '',
@@ -25,6 +26,11 @@ const Register = () => {
     function visiblePassword(){``
         setShowPassword(!showPassword)
     }
+
+    const jenis_kelamin = [
+        {value: 'L', label: 'Laki-laki'},
+        {value: 'P', label: 'Perempuan'}
+    ]
 
     const loadOptions = (inputValue, callback) => {
         const filteredOptions = data.filter(option =>
@@ -103,6 +109,13 @@ const Register = () => {
                 </div>
                 <div className="w-full">
                     <input type="text" name="email" placeholder="Email" className="input input-secondary w-full" value={state.email} onChange={handleInputChange} />
+                </div>
+                <div className="w-full">
+                    <Select
+                        options={jenis_kelamin}
+                        placeholder="Pilih Jenis Kelamin Penerima"
+                        onChange={(selectedOption) => handleInputChange({ target: { name: 'jenis_kelamin', value: selectedOption.value } })}
+                    />
                 </div>
                 <div className="w-full">
                     <AsyncSelect
