@@ -169,7 +169,7 @@ const Dashboard = () => {
             </div>
 
             <Modal
-                title={'Detail'}
+                title={forModal}
                 isOpen={isModalOpen}
                 onClose={closeModal}
             >
