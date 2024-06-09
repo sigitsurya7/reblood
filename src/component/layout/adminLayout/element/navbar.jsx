@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { BiAlignMiddle, BiMoon, BiSearchAlt, BiSun } from "react-icons/bi"
 
 import ProfileImage from '../../../../assets/profile/9904258.png'
-import { useLocation, useNavigate } from "react-router-dom"
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import { handleLogout } from "../../../../config/middleware/services/auth/auth"
 import { theme } from "../../../../config/middleware/hooks/theme"
 
@@ -61,7 +61,7 @@ const Navbar = ({ toggleSidebar }) => {
             type="button"
             id="sidebar-toggle-button"
             onClick={toggleSidebar}
-            className="btn btn-ghost lg:hidden"
+            className="btn btn-ghost hidden"
           >
             <BiAlignMiddle className="w-5 h-5" />
           </button>
@@ -110,13 +110,15 @@ const Navbar = ({ toggleSidebar }) => {
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                <NavLink to={'/profile'}>
                   Profile
-                  <span className="badge">New</span>
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a>Settings</a>
+                <a className="justify-between">
+                  Notifikasi
+                  <span className="badge badge-error badge-lg">2</span>
+                </a>
               </li>
               <li>
                 <a onClick={logout}>Logout</a>

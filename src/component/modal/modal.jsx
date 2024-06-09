@@ -44,7 +44,7 @@ const Modal = ({ isOpen, title, onClose, button, funcButton, children }) => {
                             {/* Judul Modal */}
                             <div className="flex justify-between gap-4 items-center">
                                 <div>
-                                    <h2 className="text-xl font-semibold mb-4">{title}</h2>
+                                    <h2 className="text-xl font-semibold mb-4 capitalize">{title}</h2>
                                 </div>
 
                                 <button className="btn btn-circle" onClick={closeModal}>
