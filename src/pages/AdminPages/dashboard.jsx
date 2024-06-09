@@ -151,10 +151,14 @@ const Dashboard = () => {
                                                 <span>Pemohon</span>
                                             </div>
                                         </div>
-
                                         <div className='flex gap-3 justify-end mt-4 w-full'>
-                                            <Link to={`https://wa.me/${value.phone}`} type="button" className='btn btn-circle text-white btn-success'><FaWhatsapp /></Link>
-                                            <button type="button" className='btn btn-circle text-white btn-warning' onClick={() => show('jadwal')}><FaCalendar /></button>
+                                            {
+                                                value.phone !== localStorage.getItem('phone') &&
+                                                <>
+                                                    <Link to={`https://wa.me/${value.phone}`} type="button" className='btn btn-circle text-white btn-success'><FaWhatsapp /></Link>
+                                                    <button type="button" className='btn btn-circle text-white btn-warning' onClick={() => show('jadwal')}><FaCalendar /></button>
+                                                </>
+                                            }
                                             <button type="button" className='btn btn-circle text-white btn-info' onClick={() => show('detail')}><FaEye /></button>
                                         </div>
                                     </div>

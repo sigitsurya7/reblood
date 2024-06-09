@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Component
 import { Card } from '../../../../component/card';
@@ -24,7 +24,35 @@ const PermintaanDD = () => {
         image_name: '',
         image: null,
         image_prev: null,
+        selected: ''
     })
+
+    const [family, setFamily] = useState({
+        gol_darah: '',
+        sakit: '',
+        tgl_target: '',
+        jenis_kelamin: '',
+        phone: '',
+        lokasi: '',
+        tgl_lahir: '',
+        qty_darah: '',
+        image_name: '',
+        image: null,
+        image_prev: null,
+    });
+    const [personal, setPersonal] = useState({
+        gol_darah: localStorage?.golDarah,
+        sakit: '',
+        tgl_target: '',
+        jenis_kelamin: localStorage?.gender,
+        phone: localStorage?.phone,
+        lokasi: localStorage?.lokasi,
+        tgl_lahir: '',
+        qty_darah: '',
+        image_name: '',
+        image: null,
+        image_prev: null,
+    });
 
     const navigate = useNavigate()
 
@@ -40,11 +68,30 @@ const PermintaanDD = () => {
                 modified = value.replace(/^2/, '622')
             }
         }
-        setState({
-            ...state,
-            [name]: modified
-        })
+
+        if (selected === 'Saya Sendiri') {
+            updatePersonal({ [name]: modified });
+        }else if(selected === 'Keluarga') {
+            updateFamily(name, modified);
+        }else{ 
+            setState({
+                ...state,
+                [name]: modified
+            })
+        }
     }
+
+    const updateFamily = (key, value) => {
+        setFamily(prevState => ({
+          ...prevState,
+          [key]: value
+        }));
+    };
+
+    const updatePersonal = (data) => {
+        console.log(data); // set state to empty object
+        setPersonal(data);
+    };
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]
@@ -113,26 +160,42 @@ const PermintaanDD = () => {
             console.error(error)
         }
     }
+
+    const handleOptionChange = (e) => {
+        const { name, value } = e.target
+        setState({
+            ...state,
+            [name]: value
+        });
+    }
+
+    const { selected } = state;
+    
+    useEffect(() => {
+        setState({...state, selected: 'Saya Sendiri'});
+    }, [localStorage]);
+
+    console.log(personal,'personal')
+    console.log(family,'family')
     
     return(
         <>
             <button type="button" className='btn btn-ghost mb-2' onClick={() => navigate(-1)}>
                 <FaArrowLeft /> Kembali
             </button>
-            
             <div className='h-max'>
                 <Card title={'Permintaan Darah'} button={['simpan']} color={['primary']} click={[handleSubmit]}>
                     <form encType='multipart/form-data' className='grid lg:grid-cols-3 grid-cols-1 gap-4'>
                         <div className="form-control">
                             <label className="label cursor-pointer">
                                 <span className="label-text">Saya Sendiri</span> 
-                                <input type="radio" name="radio-10" className="radio checked:bg-primary" checked />
+                                <input type="radio" name="selected" className="radio checked:bg-primary" value='Saya Sendiri' checked={selected === 'Saya Sendiri'} onChange={handleOptionChange}/>
                             </label>
                             </div>
                             <div className="form-control">
                             <label className="label cursor-pointer">
                                 <span className="label-text">Keluarga</span> 
-                                <input type="radio" name="radio-10" className="radio checked:bg-secondary" />
+                                <input type="radio" name="selected" className="radio checked:bg-secondary" value='Keluarga' checked={selected === 'Keluarga'} onChange={handleOptionChange}/>
                             </label>
                         </div>
                         <label className="form-control w-full">
@@ -175,7 +238,7 @@ const PermintaanDD = () => {
                             <div className="label">
                                 <span className="label-text">No. Handphone</span>
                             </div>
-                            <input type="number" name="phone" placeholder="Masukan no. handphone penerima" className="input input-secondary" onPaste={handlePaste} value={state.phone} onChange={handleInputChange} />
+                            <input type="number" name="phone" placeholder="Masukan no. handphone penerima" className="input input-secondary" onPaste={handlePaste} value={selected === 'Saya Sendiri' ? personal.phone : family.phone} onChange={handleInputChange} />
                         </label>
                         
                         <label className="form-control w-full">
