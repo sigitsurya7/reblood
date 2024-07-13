@@ -14,11 +14,14 @@ import AsyncSelect from 'react-select/async';
 const PermintaanDD = () => {
     const [state, setState] = useState({
         gol_darah: '',
+        nama_gol_darah: '',
         sakit: '',
         tgl_target: '',
         jenis_kelamin: '',
+        nama_jenis_kelamin: '',
         phone: '',
         lokasi: '',
+        nama_lokasi: '',
         tgl_lahir: '',
         qty_darah: '',
         image_name: '',
@@ -29,11 +32,14 @@ const PermintaanDD = () => {
 
     const [family, setFamily] = useState({
         gol_darah: '',
+        nama_gol_darah: '',
         sakit: '',
         tgl_target: '',
         jenis_kelamin: '',
+        nama_jenis_kelamin: '',
         phone: '',
         lokasi: '',
+        nama_lokasi: '',
         tgl_lahir: '',
         qty_darah: '',
         image_name: '',
@@ -42,11 +48,14 @@ const PermintaanDD = () => {
     });
     const [personal, setPersonal] = useState({
         gol_darah: localStorage?.golDarah,
+        nama_gol_darah: localStorage?.golDarah,
         sakit: '',
         tgl_target: '',
         jenis_kelamin: localStorage?.gender,
+        nama_jenis_kelamin: localStorage?.gender === 'L' ? 'Laki-laki' : 'Perempuan',
         phone: localStorage?.phone,
         lokasi: localStorage?.lokasi,
+        nama_lokasi: localStorage?.lokasi,
         tgl_lahir: '',
         qty_darah: '',
         image_name: '',
@@ -88,10 +97,46 @@ const PermintaanDD = () => {
         }));
     };
 
-    const updatePersonal = (data) => {
-        console.log(data); // set state to empty object
-        setPersonal(data);
+    const updatePersonal = (key, value) => { // set state to empty object
+        setPersonal(prevState => ({
+            ...prevState,
+            [key]: value
+        }));
     };
+
+    const onChangeSelectGender = (e) => {
+        console.log(e);
+
+        if (selected === 'Saya Sendiri') {
+            updatePersonal('jenis_kelamin', e.value );
+            updatePersonal('nama_jenis_kelamin', e.label );
+        }else if(selected === 'Keluarga') {
+            updateFamily('jenis_kelamin', e.value);
+            updateFamily('nama_jenis_kelamin', e.label);
+        }else{ 
+            setState({
+                ...state,
+                [jenis_kelamin]: e.value,
+                [nama_jenis_kelamin]: e.label
+            })
+        }
+    }
+
+    const onChangeSelectGolDar = (e) => {
+        if (selected === 'Saya Sendiri') {
+            updatePersonal('gol_darah', e.value );
+            updatePersonal('nama_gol_darah', e.label );
+        }else if(selected === 'Keluarga') {
+            updateFamily('gol_darah', e.value);
+            updateFamily('nama_gol_darah', e.label);
+        }else{ 
+            setState({
+                ...state,
+                [gol_darah]: e.value,
+                [nama_gol_darah]: e.label
+            })
+        }
+    }
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]
@@ -169,14 +214,31 @@ const PermintaanDD = () => {
         });
     }
 
+    const handleOnChange = (selectedOption, actionMeta, selectedName) => {
+        let _item = { ...itemLocal };
+        if (actionMeta.action === 'clear') {
+            _item[selectedName] = null;
+            _item[selectedOption?.name] = null;
+            _item.item_category = null;
+            _item.desc_category = null;
+            
+        } else {
+            const { name, value } = selectedOption;
+            _item[selectedOption?.name] = selectedOption?.code;
+            _item.item_category = selectedOption?.value;
+            _item.desc_category = selectedOption?.desc;
+            
+        }
+        setItemLocal(_item);
+        setFlag(flag + 1);
+    };
+
     const { selected } = state;
     
     useEffect(() => {
         setState({...state, selected: 'Saya Sendiri'});
+        // setPersonal
     }, [localStorage]);
-
-    console.log(personal,'personal')
-    console.log(family,'family')
     
     return(
         <>
@@ -184,6 +246,8 @@ const PermintaanDD = () => {
                 <FaArrowLeft /> Kembali
             </button>
             <div className='h-max'>
+                {/* {JSON.stringify(personal)}
+                {JSON.stringify(selected)} */}
                 <Card title={'Permintaan Darah'} button={['simpan']} color={['primary']} click={[handleSubmit]}>
                     <form encType='multipart/form-data' className='grid lg:grid-cols-3 grid-cols-1 gap-4'>
                         <div className="form-control">
@@ -203,9 +267,12 @@ const PermintaanDD = () => {
                                 <span className="label-text">Jenis Kelamin</span>
                             </div>
                             <Select
-                                options={jenis_kelamin}
                                 placeholder="Pilih Jenis Kelamin Penerima"
-                                onChange={(selectedOption) => handleInputChange({ target: { name: 'jenis_kelamin', value: selectedOption.value } })}
+                                name="jenis_kelamin"
+                                id="jenis_kelamin"
+                                value={selected === 'Saya Sendiri' ? { value: personal?.jenis_kelamin, label: `${personal?.nama_jenis_kelamin}` } : { value: family?.jenis_kelamin, label: `${family?.nama_jenis_kelamin}` }}
+                                options={jenis_kelamin}
+                                onChange={(e) => onChangeSelectGender(e)}
                             />
                         </label>
                         
@@ -221,9 +288,12 @@ const PermintaanDD = () => {
                                 <span className="label-text">Golongan Darah</span>
                             </div>
                             <Select
+                                placeholder="Pilih Jenis Kelamin Penerima"
+                                name="gol_darah"
+                                id="gol_darah"
+                                value={selected === 'Saya Sendiri' ? { value: personal?.gol_darah, label: `${personal?.nama_gol_darah}` } : { value: family?.gol_darah, label: `${family?.nama_gol_darah}` }}
                                 options={gol_darah}
-                                placeholder="Pilih Golongan Darah"
-                                onChange={(selectedOption) => handleInputChange({ target: { name: 'gol_darah', value: selectedOption.value } })}
+                                onChange={(e) => onChangeSelectGolDar(e)}
                             />
                         </label>
                         
@@ -254,13 +324,15 @@ const PermintaanDD = () => {
                             </div>
                             <AsyncSelect
                                 cacheOptions
-                                defaultOptions
-                                loadOptions={loadOptions}
-                                name="lokasi"
-                                value={state.lokasi}
                                 placeholder="Pilih Lokasi"
+                                name="lokasi"
+                                id="lokasi"
                                 classNamePrefix={'custom-selectB2b'}
-                                onChange={(selectedOption) => handleInputChange({ target: { name: 'lokasi', value: selectedOption } })}
+                                // value={itemLocal?.code_sub_category ? { value: itemLocal?.code_sub_category, label: ` ${itemLocal?.code_sub_category} - ${itemLocal?.desc_sub_category}` } : null}
+                                value={selected === 'Saya Sendiri' ? { value: personal?.lokasi, label: `${personal?.nama_lokasi}` } : { value: family?.lokasi, label: `${family?.nama_lokasi}` }}
+                                loadOptions={loadOptions}
+                                defaultOptions
+                                onChange={(selectedOption, actionMeta) => handleOnChange(selectedOption, actionMeta, "nama_lokasi")}
                             />
                         </label>
                         

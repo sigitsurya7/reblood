@@ -56,7 +56,7 @@ export const handleLogin = async ( login, handleResult ) => {
     
         if(response.is_active == true){
 
-          const {access_token, email, fullname, gol_darah, image_name, lokasi, phone, refresh_token, role_id, role_name, userid} = response
+          const {access_token, email, fullname, gol_darah, image_name, lokasi, phone, refresh_token, role_id, role_name, userid, gender} = response
 
           localStorage.setItem('token', access_token)
           localStorage.setItem('email', email)
@@ -69,6 +69,7 @@ export const handleLogin = async ( login, handleResult ) => {
           localStorage.setItem('role_id', role_id)
           localStorage.setItem('role_name', role_name)
           localStorage.setItem('userid', userid)
+          localStorage.setItem('gender', gender)
           localStorage.setItem('status_lock', 0)
           let theme = localStorage.getItem('theme')
           localStorage.setItem('theme', theme ? theme : 'cupcake')
