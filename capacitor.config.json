@@ -4,5 +4,11 @@
     "bundledWebRuntime": false,
     "npmClient": "npm",
     "webDir": "dist",
+    "plugins": {
+      "StatusBar": {
+        "style": "LIGHT",
+        "backgroundColor": "#00000000"
+      }
+    },
     "cordova": {}
   }
