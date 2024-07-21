@@ -81,7 +81,7 @@ const Dashboard = () => {
                         <div className="label">
                             <span className="label-text">Label</span>
                         </div>
-                        <input type="text" name="nama" className="input input-secondary" />
+                        <input type="text" name="nama" className="input input-secondary bg-slate-200" value={select.docnum} readOnly/>
                     </label>
                     <label className="form-control w-full">
                         <div className="label">
