@@ -7,6 +7,7 @@ import men from '../../assets/profile/men.png'
 import women from '../../assets/profile/women.png'
 import Modal from '../../component/modal/modal'
 import { Link, NavLink } from 'react-router-dom'
+import { createReqJadwal } from '../../config/middleware/services/master/create_permintaanDarah'
 
 const Dashboard = () => {
     var nama = localStorage.getItem('fullname')
@@ -17,6 +18,22 @@ const Dashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [forModal, setForModal] = useState('')
 
+    const [jadwalLocal, setJadwalLocal] = useState({
+        role_id: "",
+        lokasi: "",
+        role_name: "",
+        gender: "",
+        fullname: "",
+        golDarah: "",
+        email: "",
+        userid: "",
+        phone: "",
+        tgl_jadwal: "",
+        waktu: "",
+        lokasi: "",
+        note: ""
+    });
+
     function getDataReqDarah(page)
     {
         let pages = page ?? 1
@@ -25,12 +42,57 @@ const Dashboard = () => {
         })
     }
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setJadwalLocal((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const onClickSave = () => {
+        console.log('user', jadwalLocal)
+        console.log(select, 'select')
+        const newPayload = {
+            data: select,
+            jadwal: jadwalLocal,
+        };
+
+        const response = createReqJadwal(newPayload);
+        response.then(res => {
+            console.log(res);
+            if (res.status == 200 || res.status == 201) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Save data success',
+                    text: res.data.message
+                }).then(r => {
+                    closeModal();
+                });
+            }
+        }).catch(({ response: { data } }) => {
+            handlerFormError(data);
+        }).finally(_ => closeModal());
+    }
+
     useEffect(() => {
         getDataReqDarah()
-    }, [])
+        setJadwalLocal({
+            ...jadwalLocal,
+            role_id: localStorage.getItem('role_id'),
+            lokasi: localStorage.getItem('lokasi'),
+            role_name: localStorage.getItem('role_name'),
+            gender: localStorage.getItem('gender'),
+            fullname: localStorage.getItem('fullname'),
+            golDarah: localStorage.getItem('golDarah'),
+            email: localStorage.getItem('email'),
+            userid: localStorage.getItem('userid'),
+        });
+    }, [localStorage])
 
     const closeModal = () => {
         setIsModalOpen(false)
+        setJadwalLocal({});
     }
 
     const RenderModal = () => {
@@ -81,28 +143,28 @@ const Dashboard = () => {
                         <div className="label">
                             <span className="label-text">Label</span>
                         </div>
-                        <input type="text" name="nama" className="input input-secondary bg-slate-200" value={select.docnum} readOnly/>
+                        <input type="text" name="note" className="input input-secondary " value={jadwalLocal?.note ? jadwalLocal?.note : ""} onChange={(e)=>handleInputChange(e)}/>
                     </label>
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Tanggal</span>
                         </div>
-                        <input type="date" name="nama" className="input input-secondary w-full" />
+                        <input type="date" name="tgl_jadwal" className="input input-secondary w-full" value={jadwalLocal?.tgl_jadwal ? jadwalLocal?.tgl_jadwal : ""} onChange={(e)=>handleInputChange(e)}/>
                     </label>
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Waktu</span>
                         </div>
-                        <input type="time" name="nama" className="input input-secondary w-full" />
+                        <input type="time" name="waktu" className="input input-secondary w-full" value={jadwalLocal?.waktu ? jadwalLocal?.waktu : ""} onChange={(e)=>handleInputChange(e)}/>
                     </label>
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Lokasi</span>
                         </div>
-                        <input type="text" name="nama" className="input input-secondary" />
+                        <input type="text" name="lokasi" className="input input-secondary" value={jadwalLocal?.lokasi ? jadwalLocal?.lokasi: ""} onChange={(e)=>handleInputChange(e)}/>
                     </label>
 
-                    <button className='btn btn-secondary'>Submit</button>
+                    <button type='button' className='btn btn-secondary' onClick={onClickSave}>Submit</button>
                 </div>
             )
         }

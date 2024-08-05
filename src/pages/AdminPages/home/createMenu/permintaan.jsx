@@ -68,6 +68,7 @@ const PermintaanDD = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target
         let modified = value
+        
         if(name == 'telpon'){
             if(modified == '0'){
                 modified = value.replace(/^0/, '62')
@@ -79,7 +80,7 @@ const PermintaanDD = () => {
         }
 
         if (selected === 'Saya Sendiri') {
-            updatePersonal({ [name]: modified });
+            updatePersonal(name, modified );
         }else if(selected === 'Keluarga') {
             updateFamily(name, modified);
         }else{ 
@@ -105,7 +106,6 @@ const PermintaanDD = () => {
     };
 
     const onChangeSelectGender = (e) => {
-        console.log(e);
 
         if (selected === 'Saya Sendiri') {
             updatePersonal('jenis_kelamin', e.value );
@@ -142,17 +142,43 @@ const PermintaanDD = () => {
         const file = e.target.files[0]
         const reader = new FileReader()
 
-        setState({
-            ...state,
-            image_name: file.name,
-            image: file
-        })
+        if (selected === 'Saya Sendiri') {
+            setPersonal({
+                ...personal,
+                image_name: file.name,
+                image: file
+            })
+        }else if(selected === 'Keluarga') {
+            setFamily({
+                ...family,
+                image_name: file.name,
+                image: file
+            })
+        }else{ 
+            setState({
+                ...state,
+                image_name: file.name,
+                image: file
+            })
+        }
 
         reader.onload = (event) => {
-            setState((prevState) => ({
-                ...prevState,
-                image_prev: event.target.result
-            }))
+            if (selected === 'Saya Sendiri') {
+                setPersonal((prevState) => ({
+                    ...prevState,
+                    image_prev: event.target.result
+                }))
+            }else if(selected === 'Keluarga') {
+                setFamily((prevState) => ({
+                    ...prevState,
+                    image_prev: event.target.result
+                }))
+            }else{ 
+                setState((prevState) => ({
+                    ...prevState,
+                    image_prev: event.target.result
+                }))
+            }
         }
         reader.readAsDataURL(file)
     }
@@ -193,17 +219,28 @@ const PermintaanDD = () => {
     }
 
     const handleSubmit = async (e) => {
+        const newPayload = selected === 'Saya Sendiri' ? {...personal} : {...family};
+        if(selected === ''){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Isi Data Penerima',
+                text: "Data penerima belum diisi",
+                timer: 3000,
+                showConfirmButton: false
+              })
+              return;
+        }
         e.preventDefault()
-        console.log(state)
         try {
-            await AddPermintaanDarah(state, (handleResult) => {
+            await AddPermintaanDarah(newPayload, (handleResult) => {
                 // if(handleResult == 'success'){
                 //     navigate('/auth/login')
                 // }
-            })
+            });
         } catch (error) {
             console.error(error)
         }
+        
     }
 
     const handleOptionChange = (e) => {
@@ -214,23 +251,21 @@ const PermintaanDD = () => {
         });
     }
 
-    const handleOnChange = (selectedOption, actionMeta, selectedName) => {
-        let _item = { ...itemLocal };
-        if (actionMeta.action === 'clear') {
-            _item[selectedName] = null;
-            _item[selectedOption?.name] = null;
-            _item.item_category = null;
-            _item.desc_category = null;
-            
-        } else {
-            const { name, value } = selectedOption;
-            _item[selectedOption?.name] = selectedOption?.code;
-            _item.item_category = selectedOption?.value;
-            _item.desc_category = selectedOption?.desc;
-            
+    const handleOnChange = (e) => {
+        if (selected === 'Saya Sendiri') {
+            updatePersonal('lokasi', e.label );
+            updatePersonal('nama_lokasi', e.label );
+        }else if(selected === 'Keluarga') {
+            updateFamily('lokasi', e.label);
+            updateFamily('nama_lokasi', e.label);
+        }else{ 
+            setState({
+                ...state,
+                [lokasi]: e.label,
+                [nama_lokasi]: e.label
+            })
         }
-        setItemLocal(_item);
-        setFlag(flag + 1);
+        
     };
 
     const { selected } = state;
@@ -246,8 +281,8 @@ const PermintaanDD = () => {
                 <FaArrowLeft /> Kembali
             </button>
             <div className='h-max'>
-                {/* {JSON.stringify(personal)}
-                {JSON.stringify(selected)} */}
+                {JSON.stringify(family)}
+                {JSON.stringify(selected)}
                 <Card title={'Permintaan Darah'} button={['simpan']} color={['primary']} click={[handleSubmit]}>
                     <form encType='multipart/form-data' className='grid lg:grid-cols-3 grid-cols-1 gap-4'>
                         <div className="form-control">
@@ -280,7 +315,7 @@ const PermintaanDD = () => {
                             <div className="label">
                                 <span className="label-text">Tanggal Lahir Penerima</span>
                             </div>
-                            <input type="date" name="tgl_lahir" placeholder="tgl_lahir" className="input input-secondary w-full" value={state.tgl_lahir} onChange={handleInputChange} />
+                            <input type="date" name="tgl_lahir" placeholder="tgl_lahir" className="input input-secondary w-full" value={selected === 'Saya Sendiri' ? personal?.tgl_lahir : family?.tgl_lahir} onChange={handleInputChange} />
                         </label>
                         
                         <label className="form-control w-full">
@@ -301,7 +336,7 @@ const PermintaanDD = () => {
                             <div className="label">
                                 <span className="label-text">Jumlah Kantong Darah</span>
                             </div>
-                            <input type="number" name="qty_darah" placeholder="Jumlah yang di perlukan" className="input input-secondary" value={state.qty_darah} onChange={handleInputChange} />
+                            <input type="number" name="qty_darah" placeholder="Jumlah yang di perlukan" className="input input-secondary" value={selected === 'Saya Sendiri' ? personal?.qty_darah : family?.qty_darah} onChange={handleInputChange} />
                         </label>
                         
                         <label className="form-control w-full">
@@ -315,7 +350,7 @@ const PermintaanDD = () => {
                             <div className="label">
                                 <span className="label-text">Penyakit yang di derita</span>
                             </div>
-                            <input type="text" name="sakit" placeholder="Masukan sakit yang di derita" className="input input-secondary" value={state.sakit} onChange={handleInputChange} />
+                            <input type="text" name="sakit" placeholder="Masukan sakit yang di derita" className="input input-secondary" value={selected === 'Saya Sendiri' ? personal?.sakit : family?.sakit} onChange={handleInputChange} />
                         </label>
                         
                         <label className="form-control w-full">
@@ -332,7 +367,7 @@ const PermintaanDD = () => {
                                 value={selected === 'Saya Sendiri' ? { value: personal?.lokasi, label: `${personal?.nama_lokasi}` } : { value: family?.lokasi, label: `${family?.nama_lokasi}` }}
                                 loadOptions={loadOptions}
                                 defaultOptions
-                                onChange={(selectedOption, actionMeta) => handleOnChange(selectedOption, actionMeta, "nama_lokasi")}
+                                onChange={(e) => handleOnChange(e)}
                             />
                         </label>
                         
@@ -340,7 +375,7 @@ const PermintaanDD = () => {
                             <div className="label">
                                 <span className="label-text">Batas Penerimaan</span>
                             </div>
-                            <input type="date" name="tgl_target" placeholder="tgl_target" className="input input-secondary w-full" value={state.tgl_target} onChange={handleInputChange} />
+                            <input type="date" name="tgl_target" placeholder="tgl_target" className="input input-secondary w-full" value={selected === 'Saya Sendiri' ? personal?.tgl_target : family?.tgl_target} onChange={handleInputChange} />
                         </label>
                         <div className='flex justify-center gap-4'>
                             {state.image_prev ? <img src={state.image_prev} alt="" className='w-1/2 rounded-xl' /> : ''}
