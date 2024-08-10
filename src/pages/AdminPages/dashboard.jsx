@@ -28,10 +28,10 @@ const Dashboard = () => {
         email: localStorage.getItem('email'),
         userid: localStorage.getItem('userid'),
         phone: localStorage.getItem('phone'),
-        tgl_jadwal: "",
+        tgl_jadwal: "2024-08-10",
         waktu: "",
         lokasi: localStorage.getItem('lokasi'),
-        note: ""
+        note: "test"
     });
 
     const [jadwal, setJadwal] = useState({});
@@ -52,27 +52,36 @@ const Dashboard = () => {
         }));
     };
 
-    const onClickSave = () => {
+    const onClickSave = async () => {
         const newPayload = {
             data: select,
             jadwal: jadwalLocal,
         };
 
-        const response = createReqJadwal(newPayload);
-        response.then(res => {
-            console.log(res);
-            if (res.status == 200 || res.status == 201) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Save data success',
-                    text: res.data.message
-                }).then(r => {
-                    closeModal();
-                });
-            }
-        }).catch(({ response: { data } }) => {
-            handlerFormError(data);
-        }).finally(_ => closeModal());
+        try {
+            await createReqJadwal(newPayload, (handleResult) => {
+                closeModal()
+            });
+        } catch (error) {
+            console.error(error);
+            closeModal();
+        }
+
+        // const response = createReqJadwal(newPayload);
+        // response.then(res => {
+        //     console.log(res);
+        //     if (res.status == 200 || res.status == 201) {
+        //         Swal.fire({
+        //             icon: 'success',
+        //             title: 'Save data success',
+        //             text: res.data.message
+        //         }).then(r => {
+        //             closeModal();
+        //         });
+        //     }
+        // }).catch(({ response: { data } }) => {
+        //     handlerFormError(data);
+        // }).finally(_ => closeModal());
     }
 
     useEffect(() => {
@@ -88,7 +97,7 @@ const Dashboard = () => {
 
     const closeModal = () => {
         setIsModalOpen(false)
-        setJadwalLocal({});
+        // setJadwalLocal({});
     }
 
     const RenderModal = () => {

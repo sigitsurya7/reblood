@@ -50,7 +50,35 @@ export const AddPermintaanDarah = async ( form, handleResult ) => {
     }
 }
 
-export const createReqJadwal = (payload, onSuccess, onError) => {
-    const response = axios.post(`v1/admin/reqjadwal`, payload);
-    return handleResponse(response, onSuccess, onError);
-};
+// export const createReqJadwal = (payload, onSuccess, onError) => {
+//     const response = axios.post(`admin/reqjadwal`, payload);
+//     return handleResponse(response, onSuccess, onError);
+// };
+
+export const createReqJadwal = async (payload, handleResult ) => {
+    try{
+        
+        const response = await post('admin/reqjadwal', payload)
+        response.then(res => {
+            if (res.status == 200 || res.status == 201) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Save data success',
+                    text: res.data.message
+                }).then(() => {
+                    handleResult('success')
+                })
+            }
+        }).catch(({ response: { data } }) => {
+            handlerFormError(data);
+        })
+    }catch(error){
+        Swal.fire({
+            icon: 'error',
+            title: 'Ada kesalahan!',
+            text: 'Gagal Update Data',
+            showConfirmButton: false,
+            timer: 3000
+        })
+    }
+}
