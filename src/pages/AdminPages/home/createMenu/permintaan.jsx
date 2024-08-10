@@ -281,8 +281,8 @@ const PermintaanDD = () => {
                 <FaArrowLeft /> Kembali
             </button>
             <div className='h-max'>
-                {JSON.stringify(family)}
-                {JSON.stringify(selected)}
+                {/* {JSON.stringify(family)} */}
+                {/* {JSON.stringify(selected)} */}
                 <Card title={'Permintaan Darah'} button={['simpan']} color={['primary']} click={[handleSubmit]}>
                     <form encType='multipart/form-data' className='grid lg:grid-cols-3 grid-cols-1 gap-4'>
                         <div className="form-control">
