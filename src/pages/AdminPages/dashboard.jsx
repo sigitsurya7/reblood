@@ -28,7 +28,7 @@ const Dashboard = () => {
         email: localStorage.getItem('email'),
         userid: localStorage.getItem('userid'),
         phone: localStorage.getItem('phone'),
-        tgl_jadwal: "2024-08-10",
+        tgl_jadwal: "",
         waktu: "",
         lokasi: localStorage.getItem('lokasi'),
         note: ""
@@ -60,7 +60,7 @@ const Dashboard = () => {
 
         try {
             await createReqJadwal(newPayload, (handleResult) => {
-                closeModal()
+                closeModal();
             });
         } catch (error) {
             console.error(error);
@@ -86,6 +86,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         getDataReqDarah()
+    }, [])
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+        // setJadwalLocal({});
+    }
+
+    useEffect(() => {
         if (jadwalLocal) {
             const newObj = {}
             Object.keys(jadwalLocal).forEach((key) => {
@@ -97,12 +105,7 @@ const Dashboard = () => {
             })
             setJadwal(newObj);
         }
-    }, [])
-
-    const closeModal = () => {
-        setIsModalOpen(false)
-        // setJadwalLocal({});
-    }
+    }, [jadwalLocal])
 
     return(
         <>
@@ -214,8 +217,8 @@ const Dashboard = () => {
                     </div>
                     :
                     <div className='grid grid-cols-1 gap-4'>
-                        {/* {JSON.stringify(jadwalLocal)}
-                        {JSON.stringify(jadwal)} */}
+                        {JSON.stringify(jadwalLocal)}
+                        {JSON.stringify(jadwal)}
                         <label className="form-control w-full">
                             <div className="label">
                                 <span className="label-text">Label</span>

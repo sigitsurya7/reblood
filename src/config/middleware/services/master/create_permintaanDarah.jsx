@@ -57,7 +57,6 @@ export const AddPermintaanDarah = async ( form, handleResult ) => {
 
 export const createReqJadwal = async (payload, handleResult ) => {
     try{
-        
         const response = await post('admin/reqjadwal', payload)
         response.then(res => {
             if (res.status == 200 || res.status == 201) {
