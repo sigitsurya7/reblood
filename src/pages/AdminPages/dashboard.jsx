@@ -30,7 +30,7 @@ const Dashboard = () => {
         phone: localStorage.getItem('phone'),
         tgl_jadwal: "",
         waktu: "",
-        lokasi: "",
+        lokasi: localStorage.getItem('lokasi'),
         note: ""
     });
 
