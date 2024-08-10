@@ -1,6 +1,6 @@
 import {BiGroup, BiSpeaker, BiUser, BiUserCheck} from 'react-icons/bi'
 import { Greeting, formatDate } from '../../config/middleware/hooks/greeting'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { get } from '../../config/middleware/hooks/gateway'
 import { FaCalendar, FaClock, FaEye, FaLocationPin, FaWhatsapp } from 'react-icons/fa6'
 import men from '../../assets/profile/men.png'
@@ -31,7 +31,7 @@ const Dashboard = () => {
         tgl_jadwal: "2024-08-10",
         waktu: "",
         lokasi: localStorage.getItem('lokasi'),
-        note: "test"
+        note: ""
     });
 
     const [jadwal, setJadwal] = useState({});
@@ -103,83 +103,6 @@ const Dashboard = () => {
         // setJadwalLocal({});
     }
 
-    const RenderModal = () => {
-        if(forModal == 'detail'){
-            return(
-                <div className='flex flex-col gap-4 flex-wrap overflow-auto'>
-                    <div className='grid grid-cols-2 gap-4'>
-                        <div className='flex flex-col items-center'>
-                            <span className='font-bold'>{select.created_by}</span>
-                            <span>Pemohon</span>
-                        </div>
-                        <div className='flex flex-col items-center'>
-                            <span className='font-bold'>{select.gender == 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
-                            <span>Gender</span>
-                        </div>
-                        <div className='flex flex-col items-center'>
-                            <span className='font-bold'>{select.gol_darah}</span>
-                            <span>Golongan Darah</span>
-                        </div>
-    
-                        <div className='flex flex-col items-center'>
-                            <span className='font-bold'>{select.sakit}</span>
-                            <span>Sakit</span>
-                        </div>
-                        <div className='flex flex-col items-center'>
-                            <span className='font-bold'>{select.qty_darah}</span>
-                            <span>Jumlah Darah</span>
-                        </div>
-                        <div className='flex flex-col items-center'>
-                            <span className='font-bold'>{select.lokasi}</span>
-                            <span>Lokasi</span>
-                        </div>
-                        <div className='flex flex-col items-center col-span-2'>
-                            <span className='font-bold'>{formatDate(select.tgl_lahir)}</span>
-                            <span className='font-semibold flex items-center gap-1'><FaCalendar /> Tanggal Lahir</span>
-                        </div>
-                        <div className='flex flex-col items-center col-span-2'>
-                            <span className='font-bold'>{formatDate(select.tgl_target)}</span>
-                            <span className='font-semibold flex items-center gap-1'><FaClock /> Target</span>
-                        </div>
-                    </div>
-                </div>
-            )
-        }else{
-            return(
-                <div className='grid grid-cols-1 gap-4'>
-                    {/* {JSON.stringify(jadwalLocal)}
-                    {JSON.stringify(jadwal)} */}
-                    <label className="form-control w-full">
-                        <div className="label">
-                            <span className="label-text">Label</span>
-                        </div>
-                        <input type="text" name="note" placeholder="Masukan note" className="input input-secondary" value={jadwalLocal?.note ? jadwalLocal?.note : ""} onChange={handleInputChange} />
-                    </label>
-                    <label className="form-control w-full">
-                        <div className="label">
-                            <span className="label-text">Tanggal</span>
-                        </div>
-                        <input type="date" name="tgl_jadwal" className="input input-secondary w-full" value={jadwalLocal?.tgl_jadwal ? jadwalLocal?.tgl_jadwal : ""} onChange={handleInputChange}/>
-                    </label>
-                    <label className="form-control w-full">
-                        <div className="label">
-                            <span className="label-text">Waktu</span>
-                        </div>
-                        <input type="time" name="waktu" className="input input-secondary w-full" value={jadwalLocal?.waktu ? jadwalLocal?.waktu : ""} onChange={handleInputChange}/>
-                    </label>
-                    <label className="form-control w-full">
-                        <div className="label">
-                            <span className="label-text">Lokasi</span>
-                        </div>
-                        <input type="text" name="lokasi" className="input input-secondary" value={jadwalLocal?.lokasi ? jadwalLocal?.lokasi: ""} onChange={handleInputChange}/>
-                    </label>
-
-                    <button type='button' className='btn btn-secondary' onClick={onClickSave}>Submit</button>
-                </div>
-            )
-        }
-    }
-
     return(
         <>
             <span className='text-xl font-semibold capitalize'>{greeting} {nama}</span>
@@ -249,7 +172,77 @@ const Dashboard = () => {
                 isOpen={isModalOpen}
                 onClose={closeModal}
             >
-                <RenderModal />
+                {
+                    forModal == 'detail' ? 
+                    <div className='flex flex-col gap-4 flex-wrap overflow-auto'>
+                        <div className='grid grid-cols-2 gap-4'>
+                            <div className='flex flex-col items-center'>
+                                <span className='font-bold'>{select.created_by}</span>
+                                <span>Pemohon</span>
+                            </div>
+                            <div className='flex flex-col items-center'>
+                                <span className='font-bold'>{select.gender == 'L' ? 'Laki-Laki' : 'Perempuan'}</span>
+                                <span>Gender</span>
+                            </div>
+                            <div className='flex flex-col items-center'>
+                                <span className='font-bold'>{select.gol_darah}</span>
+                                <span>Golongan Darah</span>
+                            </div>
+        
+                            <div className='flex flex-col items-center'>
+                                <span className='font-bold'>{select.sakit}</span>
+                                <span>Sakit</span>
+                            </div>
+                            <div className='flex flex-col items-center'>
+                                <span className='font-bold'>{select.qty_darah}</span>
+                                <span>Jumlah Darah</span>
+                            </div>
+                            <div className='flex flex-col items-center'>
+                                <span className='font-bold'>{select.lokasi}</span>
+                                <span>Lokasi</span>
+                            </div>
+                            <div className='flex flex-col items-center col-span-2'>
+                                <span className='font-bold'>{formatDate(select.tgl_lahir)}</span>
+                                <span className='font-semibold flex items-center gap-1'><FaCalendar /> Tanggal Lahir</span>
+                            </div>
+                            <div className='flex flex-col items-center col-span-2'>
+                                <span className='font-bold'>{formatDate(select.tgl_target)}</span>
+                                <span className='font-semibold flex items-center gap-1'><FaClock /> Target</span>
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    <div className='grid grid-cols-1 gap-4'>
+                        {/* {JSON.stringify(jadwalLocal)}
+                        {JSON.stringify(jadwal)} */}
+                        <label className="form-control w-full">
+                            <div className="label">
+                                <span className="label-text">Label</span>
+                            </div>
+                            <input type="text" name="note" placeholder="Masukan note" className="input input-secondary" value={jadwalLocal?.note ? jadwalLocal?.note : ""} onChange={handleInputChange} />
+                        </label>
+                        <label className="form-control w-full">
+                            <div className="label">
+                                <span className="label-text">Tanggal</span>
+                            </div>
+                            <input type="date" name="tgl_jadwal" className="input input-secondary w-full" value={jadwalLocal?.tgl_jadwal ? jadwalLocal?.tgl_jadwal : ""} onChange={handleInputChange}/>
+                        </label>
+                        <label className="form-control w-full">
+                            <div className="label">
+                                <span className="label-text">Waktu</span>
+                            </div>
+                            <input type="time" name="waktu" className="input input-secondary w-full" value={jadwalLocal?.waktu ? jadwalLocal?.waktu : ""} onChange={handleInputChange}/>
+                        </label>
+                        <label className="form-control w-full">
+                            <div className="label">
+                                <span className="label-text">Lokasi</span>
+                            </div>
+                            <input type="text" name="lokasi" className="input input-secondary" value={jadwalLocal?.lokasi ? jadwalLocal?.lokasi: ""} onChange={handleInputChange}/>
+                        </label>
+
+                        <button type='button' className='btn btn-secondary' onClick={onClickSave}>Submit</button>
+                    </div>
+                }
             </Modal>
         </>
     )

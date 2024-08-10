@@ -29,7 +29,7 @@ const JadwalHome = () => {
             <div className="carousel w-full gap-4">
                 {dates.map((value, index) => {
                     return(
-                        <div key={index} className="carousel-item shadow-md flex flex-col text-xl justify-center items-center bg-red-400 p-2 rounded-lg text-white font-semibold">
+                        <div key={index} className="carousel-item cursor-pointer shadow-md flex flex-col text-xl justify-center items-center bg-red-400 p-2 rounded-lg text-white font-semibold">
                         <span>{value.day}</span>
                         {value.month}
                         </div>
