@@ -93,6 +93,7 @@ const Dashboard = () => {
                 newObj['docnum'] = select?.docnum;
                 newObj['qty_darah'] = select?.qty_darah;
                 newObj['nextapproval'] = select?.phone;
+                newObj['id'] = select?.id;
             })
             setJadwal(newObj);
         }
