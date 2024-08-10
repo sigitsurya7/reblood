@@ -19,20 +19,22 @@ const Dashboard = () => {
     const [forModal, setForModal] = useState('')
 
     const [jadwalLocal, setJadwalLocal] = useState({
-        role_id: "",
-        lokasi: "",
-        role_name: "",
-        gender: "",
-        fullname: "",
-        golDarah: "",
-        email: "",
-        userid: "",
-        phone: "",
+        role_id: localStorage.getItem('role_id'),
+        lokasi: localStorage.getItem('lokasi'),
+        role_name: localStorage.getItem('role_name'),
+        gender: localStorage.getItem('gender'),
+        fullname: localStorage.getItem('fullname'),
+        golDarah: localStorage.getItem('golDarah'),
+        email: localStorage.getItem('email'),
+        userid: localStorage.getItem('userid'),
+        phone: localStorage.getItem('phone'),
         tgl_jadwal: "",
         waktu: "",
         lokasi: "",
         note: ""
     });
+
+    const [jadwal, setJadwal] = useState({});
 
     function getDataReqDarah(page)
     {
@@ -51,8 +53,6 @@ const Dashboard = () => {
     };
 
     const onClickSave = () => {
-        console.log('user', jadwalLocal)
-        console.log(select, 'select')
         const newPayload = {
             data: select,
             jadwal: jadwalLocal,
@@ -77,18 +77,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         getDataReqDarah()
-        setJadwalLocal({
-            ...jadwalLocal,
-            role_id: localStorage.getItem('role_id'),
-            lokasi: localStorage.getItem('lokasi'),
-            role_name: localStorage.getItem('role_name'),
-            gender: localStorage.getItem('gender'),
-            fullname: localStorage.getItem('fullname'),
-            golDarah: localStorage.getItem('golDarah'),
-            email: localStorage.getItem('email'),
-            userid: localStorage.getItem('userid'),
-        });
-    }, [localStorage])
+        if (jadwalLocal) {
+            const newObj = {}
+            Object.keys(jadwalLocal).forEach((key) => {
+                newObj[key] = jadwalLocal[key];
+            })
+            setJadwal(newObj);
+        }
+    }, [])
 
     const closeModal = () => {
         setIsModalOpen(false)
@@ -139,29 +135,31 @@ const Dashboard = () => {
         }else{
             return(
                 <div className='grid grid-cols-1 gap-4'>
+                    {JSON.stringify(jadwalLocal)}
+                    {JSON.stringify(jadwal)}
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Label</span>
                         </div>
-                        <input type="text" name="note" className="input input-secondary " value={jadwalLocal?.note ? jadwalLocal?.note : ""} onChange={(e)=>handleInputChange(e)}/>
+                        <input type="text" name="note" placeholder="Masukan note" className="input input-secondary" value={jadwalLocal?.note ? jadwalLocal?.note : ""} onChange={handleInputChange} />
                     </label>
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Tanggal</span>
                         </div>
-                        <input type="date" name="tgl_jadwal" className="input input-secondary w-full" value={jadwalLocal?.tgl_jadwal ? jadwalLocal?.tgl_jadwal : ""} onChange={(e)=>handleInputChange(e)}/>
+                        <input type="date" name="tgl_jadwal" className="input input-secondary w-full" value={jadwalLocal?.tgl_jadwal ? jadwalLocal?.tgl_jadwal : ""} onChange={handleInputChange}/>
                     </label>
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Waktu</span>
                         </div>
-                        <input type="time" name="waktu" className="input input-secondary w-full" value={jadwalLocal?.waktu ? jadwalLocal?.waktu : ""} onChange={(e)=>handleInputChange(e)}/>
+                        <input type="time" name="waktu" className="input input-secondary w-full" value={jadwalLocal?.waktu ? jadwalLocal?.waktu : ""} onChange={handleInputChange}/>
                     </label>
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Lokasi</span>
                         </div>
-                        <input type="text" name="lokasi" className="input input-secondary" value={jadwalLocal?.lokasi ? jadwalLocal?.lokasi: ""} onChange={(e)=>handleInputChange(e)}/>
+                        <input type="text" name="lokasi" className="input input-secondary" value={jadwalLocal?.lokasi ? jadwalLocal?.lokasi: ""} onChange={handleInputChange}/>
                     </label>
 
                     <button type='button' className='btn btn-secondary' onClick={onClickSave}>Submit</button>
