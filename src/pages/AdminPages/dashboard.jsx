@@ -93,6 +93,7 @@ const Dashboard = () => {
                 newObj['docnum'] = select?.docnum;
                 newObj['qty_darah'] = select?.qty_darah;
                 newObj['nextapproval'] = select?.phone;
+                newObj['id'] = select?.id;
             })
             setJadwal(newObj);
         }
@@ -147,8 +148,8 @@ const Dashboard = () => {
         }else{
             return(
                 <div className='grid grid-cols-1 gap-4'>
-                    {/* {JSON.stringify(jadwalLocal)}
-                    {JSON.stringify(jadwal)} */}
+                    {JSON.stringify(jadwalLocal)}
+                    {JSON.stringify(jadwal)}
                     <label className="form-control w-full">
                         <div className="label">
                             <span className="label-text">Label</span>
