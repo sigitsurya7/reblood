@@ -60,7 +60,7 @@ const JadwalHome = () => {
 
     return(
         <>
-            <div className="carousel w-full gap-4 sticky bg-base-200 z-50 top-20">
+            <div className="carousel w-full gap-4 sticky bg-base-200 z-10 top-20">
                 {dates.map((value, index) => {
                     return(
                         <div key={index} className="carousel-item cursor-pointer shadow-md flex flex-col text-xl justify-center items-center bg-red-400 p-2 rounded-lg text-white font-semibold">
@@ -107,9 +107,9 @@ const JadwalHome = () => {
 
                                 <div className="divider"></div>
 
-                                <div className="flex gap-4 w-min">
-                                    <button onClick={() => {setState({...state, modal: true, modalData: value, modalDetail: 'reject'})}} className="btn btn-error btn-block">Reject</button>
-                                    <button onClick={() => {setState({...state, modal: true, modalData: value, modalDetail: 'approve'})}} className="btn btn-primary btn-block">Approve</button>
+                                <div className="flex gap-4  justify-end min-w-fit">
+                                    <button onClick={() => {setState({...state, modal: true, modalData: value, modalDetail: 'reject'})}} className="btn btn-error">Reject</button>
+                                    <button onClick={() => {setState({...state, modal: true, modalData: value, modalDetail: 'approve'})}} className="btn btn-primary">Approve</button>
                                 </div>
                             </div>
                         )
