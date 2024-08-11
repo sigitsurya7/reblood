@@ -2,7 +2,7 @@ import { Transition } from "@headlessui/react"
 import React, { Fragment, useEffect, useState } from "react"
 import { BiX } from "react-icons/bi"
 
-const Modal = ({ isOpen, title, onClose, button, funcButton, children }) => {
+const Modal = ({ isOpen, title, onClose, button, color, funcButton, children, icon }) => {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
@@ -22,7 +22,15 @@ const Modal = ({ isOpen, title, onClose, button, funcButton, children }) => {
     }
 
     function renderButton(){
-        return button ? <button onClick={funcButton} className="btn btn-primary capitalize">{ button }</button> : null
+        return button ? button.map((btn, index) => {
+            return(
+                <>
+                    <button type="button" className={`btn btn-md w-max ${color ? color[index] : 'btn-primary'} capitalize`}>
+                       { icon ? icon[index] : ''} {btn}
+                    </button>
+                </>
+            )
+        }) : []
     }
 
     return open ? (
@@ -58,7 +66,7 @@ const Modal = ({ isOpen, title, onClose, button, funcButton, children }) => {
                             </div>
 
                             {/* Button */}
-                            <div className="flex justify-end p-4">
+                            <div className="flex justify-end gap-2 p-4">
                                 { renderButton() }
                             </div>
                         </div>
