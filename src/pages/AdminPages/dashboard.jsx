@@ -217,8 +217,6 @@ const Dashboard = () => {
                     </div>
                     :
                     <div className='grid grid-cols-1 gap-4'>
-                        {JSON.stringify(jadwalLocal)}
-                        {JSON.stringify(jadwal)}
                         <label className="form-control w-full">
                             <div className="label">
                                 <span className="label-text">Label</span>

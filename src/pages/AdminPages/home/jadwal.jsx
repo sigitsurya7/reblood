@@ -12,27 +12,38 @@ const JadwalHome = () => {
     const currentMonth = today.getMonth()
     const currentYear = today.getFullYear()
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
-    const currentDate = today.getDate()
+    const currentDate = today.getDate();
 
     const [ state, setState ] = useState({
         data: [],
         modal: false,
         modalData: {},
-        modalDetail: ''
+        modalDetail: '',
+        myPhone: localStorage.getItem('phone'),
     })
+
+    const { myPhone } = state
+
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
 
     const generateDates = () => {
         const datesArray = []
-        for (let i = currentDate; i <= daysInMonth; i++) {
+        let hMinus = currentDate - 7;
+        for (let i = hMinus; i <= daysInMonth; i++) {
             const monthName = getIndonesianMonthName(today.getMonth())
-            datesArray.push({ day: i, month: monthName })
+            datesArray.push({ day: i, month: monthName, date: `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}` })
         }
-
+        // console.log(datesArray)
         setDates(datesArray)
     }
 
     function getData(){
-        get('admin/reqjadwal?filter=is_active:true').then((response) => {
+        get(`admin/reqjadwal?filter=is_active:true,nextapproval:${myPhone}`).then((response) => {
             setState({
                 ...state,
                 data: response.data
@@ -121,8 +132,8 @@ const JadwalHome = () => {
                 title={state.modalDetail}
                 isOpen={state.modal}
                 onClose={() => setState({...state, modal:false, modalData: {}, modalDetail: '' })}
-                button={['kirim']}
-                color={['btn-primary']}
+                button={state.modalDetail === 'approve' ? ['Send'] : ['Reject']}
+                color={state.modalDetail === 'approve'? ['btn-primary'] : ['btn-error']}
                 icon={[<IoIosSend /> ]}
             >
                 <div className="flex flex-col gap-4">
