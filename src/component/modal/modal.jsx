@@ -25,7 +25,7 @@ const Modal = ({ isOpen, title, onClose, button, color, funcButton, children, ic
         return button ? button.map((btn, index) => {
             return(
                 <>
-                    <button type="button" className={`btn btn-md w-max ${color ? color[index] : 'btn-primary'} capitalize`}>
+                    <button type="button" className={`btn btn-md w-max ${color ? color[index] : 'btn-primary'} capitalize`} onClick={funcButton ? funcButton[index] : ''}>
                        { icon ? icon[index] : ''} {btn}
                     </button>
                 </>

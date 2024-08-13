@@ -4,6 +4,7 @@ import { get } from "../../../config/middleware/hooks/gateway"
 import { getIndonesianMonthName } from "../../../config/middleware/hooks/date"
 import Modal from "../../../component/modal/modal"
 import { IoIosSend } from "react-icons/io";
+import { Approval } from "../../../config/middleware/services/master/approval"
 
 const JadwalHome = () => {
     const [dates, setDates] = useState([])
@@ -23,13 +24,6 @@ const JadwalHome = () => {
     })
 
     const { myPhone } = state
-
-    const formatDate = (date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    };
 
     const generateDates = () => {
         const datesArray = []
@@ -64,6 +58,22 @@ const JadwalHome = () => {
         }))
     }
 
+    const sendData = async () => {
+        const newPayload = {
+            data: select,
+            jadwal: jadwal,
+        };
+
+        try {
+            await Approval(newPayload, (handleResult) => {
+                setState({...state, modal:false, modalData: {}, modalDetail: '' })
+            });
+        } catch (error) {
+            console.error(error);
+            setState({...state, modal:false, modalData: {}, modalDetail: '' })
+        }
+    }
+
     useState(() => {
         generateDates()
         getData()
@@ -71,7 +81,7 @@ const JadwalHome = () => {
 
     return(
         <>
-            <div className="carousel w-full gap-4 sticky bg-base-200 z-10 top-20">
+            <div className="carousel w-full gap-4 bg-base-200">
                 {dates.map((value, index) => {
                     return(
                         <div key={index} className="carousel-item cursor-pointer shadow-md flex flex-col text-xl justify-center items-center bg-red-400 p-2 rounded-lg text-white font-semibold">
@@ -134,6 +144,7 @@ const JadwalHome = () => {
                 onClose={() => setState({...state, modal:false, modalData: {}, modalDetail: '' })}
                 button={state.modalDetail === 'approve' ? ['Send'] : ['Reject']}
                 color={state.modalDetail === 'approve'? ['btn-primary'] : ['btn-error']}
+                funcButton={[sendData]}
                 icon={[<IoIosSend /> ]}
             >
                 <div className="flex flex-col gap-4">
