@@ -4,7 +4,8 @@ import { get } from "../../../config/middleware/hooks/gateway"
 import { getIndonesianMonthName } from "../../../config/middleware/hooks/date"
 import Modal from "../../../component/modal/modal"
 import { IoIosSend } from "react-icons/io";
-import { Approval } from "../../../config/middleware/services/master/approval"
+import { Approval, Reject } from "../../../config/middleware/services/master/approval"
+import Swal from "sweetalert2"
 
 const JadwalHome = () => {
     const [dates, setDates] = useState([])
@@ -58,16 +59,34 @@ const JadwalHome = () => {
         }))
     }
 
+    {}
+
     const sendData = async () => {
-        const newPayload = {
-            data: select,
-            jadwal: jadwal,
-        };
+        const { modalData } = state;
+
+        if(!modalData.note){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Gagal',
+                text: 'Note tidak boleh kosong',
+                timer: 3000,
+                showConfirmButton: false
+            });
+            return;
+        }
+
+        modalData.decision = state.modalDetail === 'approve' ? 1 : 2;
 
         try {
-            await Approval(newPayload, (handleResult) => {
-                setState({...state, modal:false, modalData: {}, modalDetail: '' })
-            });
+            if  (state.modalDetail === 'approve') {
+                await Approval(modalData, (handleResult) => {
+                    setState({...state, modal:false, modalData: {}, modalDetail: '' })
+                });
+            }else{
+                await Reject(modalData, (handleResult) => {
+                    setState({...state, modal:false, modalData: {}, modalDetail: '' })
+                });
+            }
         } catch (error) {
             console.error(error);
             setState({...state, modal:false, modalData: {}, modalDetail: '' })
