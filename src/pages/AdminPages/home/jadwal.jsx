@@ -118,6 +118,8 @@ const JadwalHome = () => {
         getData()
     }, [])
 
+    console.log(state.modalDetail)
+
     return(
         <>
             <div className="carousel w-full gap-4 bg-base-200">
@@ -138,34 +140,38 @@ const JadwalHome = () => {
                         return(
                             <div key={index}
                                 className="bg-base-100 w-full p-4 rounded-lg rounded-tr-none shadow-md flex flex-col gap-2"
-                                onClick={() => {setState({...state, modal: true, modalData: value, modalDetail: value.is_schedulled == true && value.phone_requestor == state.myPhone ? 'upload' : 'view'})}}
                             >
-                                <span className="font-mono text-center">{ value.docnum }</span>
+                                <div
+                                    className="flex flex-col gap-2"
+                                    onClick={() => {setState({...state, modal: true, modalData: value, modalDetail: value.is_schedulled == true && value.phone_requestor == state.myPhone ? 'upload' : 'view'})}}
+                                >
+                                    <span className="font-mono text-center">{ value.docnum }</span>
 
-                                <article className="flex flex-col gap-1 text-center">
-                                    <span className="underline underline-offset-1 font-semibold text-primary">Donor Berikutnya</span>
-                                    <span className="text-xl font-semibold"> { value.tgl_jadwal } </span>
-                                </article>
+                                    <article className="flex flex-col gap-1 text-center">
+                                        <span className="underline underline-offset-1 font-semibold text-primary">Donor Berikutnya</span>
+                                        <span className="text-xl font-semibold"> { value.tgl_jadwal } </span>
+                                    </article>
 
-                                <div className="divider">Janji Donor</div>
+                                    <div className="divider">Janji Donor</div>
 
-                                <div className="grid grid-cols-2 gap-2 items-center">
-                                    <article className="flex flex-col gap-1 items-center">
-                                        <span className="underline underline-2 text-md font-semibold">Label</span>
-                                        <span className="font-semibold capitalize">{value.note}</span>
-                                    </article>
-                                    <article className="flex flex-col gap-1 items-center">
-                                        <span className="underline underline-2 text-md font-semibold">Tanggal</span>
-                                        <span className="font-semibold capitalize">{value.tgl_jadwal}</span>
-                                    </article>
-                                    <article className="flex flex-col gap-1 items-center">
-                                        <span className="underline underline-2 text-md font-semibold">Waktu</span>
-                                        <span className="font-semibold capitalize">{value.waktu}</span>
-                                    </article>
-                                    <article className="flex flex-col gap-1 items-center">
-                                        <span className="underline underline-2 text-md font-semibold">Lokasi</span>
-                                        <span className="font-semibold capitalize">{value.lokasi}</span>
-                                    </article>
+                                    <div className="grid grid-cols-2 gap-2 items-center">
+                                        <article className="flex flex-col gap-1 items-center">
+                                            <span className="underline underline-2 text-md font-semibold">Label</span>
+                                            <span className="font-semibold capitalize">{value.note}</span>
+                                        </article>
+                                        <article className="flex flex-col gap-1 items-center">
+                                            <span className="underline underline-2 text-md font-semibold">Tanggal</span>
+                                            <span className="font-semibold capitalize">{value.tgl_jadwal}</span>
+                                        </article>
+                                        <article className="flex flex-col gap-1 items-center">
+                                            <span className="underline underline-2 text-md font-semibold">Waktu</span>
+                                            <span className="font-semibold capitalize">{value.waktu}</span>
+                                        </article>
+                                        <article className="flex flex-col gap-1 items-center">
+                                            <span className="underline underline-2 text-md font-semibold">Lokasi</span>
+                                            <span className="font-semibold capitalize">{value.lokasi}</span>
+                                        </article>
+                                    </div>
                                 </div>
 
                                 <div className="divider"></div>
