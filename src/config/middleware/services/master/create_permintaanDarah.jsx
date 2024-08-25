@@ -58,24 +58,30 @@ export const AddPermintaanDarah = async ( form, handleResult ) => {
 export const createReqJadwal = async (payload, handleResult ) => {
     try{
         const response = await post('admin/reqjadwal', payload)
-        response.then(res => {
-            if (res.status == 200 || res.status == 201) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Save data success',
-                    text: res.data.message
-                }).then(() => {
-                    handleResult('success')
-                })
-            }
-        }).catch(({ response: { data } }) => {
-            handlerFormError(data);
-        })
+        if(response.status){
+            Swal.fire({
+                icon: 'success',
+                title: 'Jadwal',
+                text: 'Sukses Membuat Jadwal',
+                showConfirmButton: false,
+                timer: 3000
+            }).then(() => {
+                handleResult('success')
+            })
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Jadwal',
+                text: 'Gagal Membuat Jadwal',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
     }catch(error){
         Swal.fire({
             icon: 'error',
             title: 'Ada kesalahan!',
-            text: 'Gagal Update Data',
+            text: 'Gagal Membuat Jadwal',
             showConfirmButton: false,
             timer: 3000
         })
